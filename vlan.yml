@@ -1,0 +1,6 @@
+---
+- name: Create vlan 10
+  ios_vlan:
+     vlan_id:  85
+     name: test-vlan
+     state: present
