@@ -1,0 +1,253 @@
+
+!
+! Last configuration change at 22:58:45 EET Sun Jul 21 2019
+!
+version 15.1
+service timestamps debug datetime msec
+service timestamps log datetime msec
+service password-encryption
+service compress-config
+!
+hostname SW_LV3_Distrib_Lyon
+!
+boot-start-marker
+boot-end-marker
+!
+!
+enable secret 4 tnhtc92DXBhelxjYk8LWJrPV36S2i4ntXrpb4RFmfqY
+!
+username mmb password 7 00071A150754
+no aaa new-model
+clock timezone EET 2 0
+vtp domain mmb.fr
+vtp mode transparent
+!
+ip cef
+ip dhcp excluded-address 192.168.1.97
+!
+ip dhcp pool Support
+ network 192.168.1.64 255.255.255.240
+ default-router 192.168.1.76
+!
+ip dhcp pool DEV_Mobile
+ network 192.168.1.80 255.255.255.248
+ default-router 192.168.1.84
+!
+ip dhcp pool DEV_Web_App
+ network 192.168.1.88 255.255.255.248
+ default-router 192.168.1.92
+!
+!
+no ip domain-lookup
+ip domain-name infra-mmb.fr
+no ipv6 cef
+ipv6 multicast rpf use-bgp
+!
+!
+!
+!
+!
+!
+!
+spanning-tree mode pvst
+spanning-tree extend system-id
+!
+!
+!
+!
+vlan internal allocation policy ascending
+!
+vlan 10
+ name Support
+!
+vlan 20
+ name DEV_Mobile
+!
+vlan 30
+ name DEV_Web_App
+!
+vlan 99
+ name management
+!
+ip ssh version 2
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Ethernet0/0
+ no shutdown
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ duplex auto
+!
+interface Ethernet0/1
+ no shutdown
+ switchport trunk encapsulation dot1q
+ switchport trunk allowed vlan 1,10,20,30,99
+ switchport mode trunk
+ duplex auto
+!
+interface Ethernet0/2
+ no shutdown
+ switchport trunk encapsulation dot1q
+ switchport trunk allowed vlan 1,10,20,30,99
+ switchport mode trunk
+ duplex auto
+!
+interface Ethernet0/3
+ no shutdown
+ duplex auto
+!
+interface Ethernet1/0
+ no shutdown
+ duplex auto
+!
+interface Ethernet1/1
+ no shutdown
+ duplex auto
+!
+interface Ethernet1/2
+ no shutdown
+ switchport trunk encapsulation dot1q
+ switchport trunk allowed vlan 1,10,20,30,99
+ switchport mode trunk
+ duplex auto
+!
+interface Ethernet1/3
+ no shutdown
+ duplex auto
+!
+interface Ethernet2/0
+ no shutdown
+ duplex auto
+!
+interface Ethernet2/1
+ no shutdown
+ duplex auto
+!
+interface Ethernet2/2
+ no shutdown
+ duplex auto
+!
+interface Ethernet2/3
+ no shutdown
+ duplex auto
+!
+interface Serial3/0
+ no shutdown
+ no ip address
+ shutdown
+ no fair-queue
+ serial restart-delay 0
+!
+interface Serial3/1
+ no shutdown
+ no ip address
+ shutdown
+ serial restart-delay 0
+!
+interface Serial3/2
+ no shutdown
+ no ip address
+ shutdown
+ serial restart-delay 0
+!
+interface Serial3/3
+ no shutdown
+ no ip address
+ shutdown
+ serial restart-delay 0
+!
+interface Serial4/0
+ no shutdown
+ no ip address
+ shutdown
+ serial restart-delay 0
+!
+interface Serial4/1
+ no shutdown
+ no ip address
+ shutdown
+ serial restart-delay 0
+!
+interface Serial4/2
+ no shutdown
+ no ip address
+ shutdown
+ serial restart-delay 0
+!
+interface Serial4/3
+ no shutdown
+ no ip address
+ shutdown
+ serial restart-delay 0
+!
+interface Serial5/0
+ no shutdown
+ no ip address
+ shutdown
+ serial restart-delay 0
+!
+interface Serial5/1
+ no shutdown
+ no ip address
+ shutdown
+ serial restart-delay 0
+!
+interface Serial5/2
+ no shutdown
+ no ip address
+ shutdown
+ serial restart-delay 0
+!
+interface Serial5/3
+ no shutdown
+ no ip address
+ shutdown
+ serial restart-delay 0
+!
+interface Vlan1
+ no shutdown
+ no ip address
+!
+interface Vlan10
+ no shutdown
+ ip address 192.168.1.75 255.255.255.240
+!
+interface Vlan20
+ no shutdown
+ ip address 192.168.1.83 255.255.255.248
+!
+interface Vlan30
+ no shutdown
+ ip address 192.168.1.91 255.255.255.248
+!
+interface Vlan99
+ no shutdown
+ ip address 192.168.3.2 255.255.255.248
+!
+ip default-gateway 192.168.3.3
+!
+no ip http server
+!
+ip route 0.0.0.0 0.0.0.0 192.168.3.3
+!
+!
+!
+!
+control-plane
+!
+!
+line con 0
+ logging synchronous
+line aux 0
+line vty 0 4
+ login local
+ transport input ssh
+!
+end

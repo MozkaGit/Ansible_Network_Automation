@@ -1,0 +1,284 @@
+
+!
+! Last configuration change at 22:52:05 EET Sun Jul 21 2019
+!
+version 15.5
+service timestamps debug datetime msec
+service timestamps log datetime msec
+service password-encryption
+!
+hostname router_marseille
+!
+boot-start-marker
+boot-end-marker
+!
+!
+enable secret 5 $1$gTgx$pPeb.xjAJW9jwcz27olRu0
+!
+no aaa new-model
+!
+!
+!
+bsd-client server url https://cloudsso.cisco.com/as/token.oauth2
+clock timezone EET 2 0
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+
+
+!
+!
+!
+!
+no ip domain lookup
+ip domain name infra-mmb.fr
+ip cef
+no ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+!
+!
+cts logging verbose
+!
+!
+username mmb password 7 01100F175804
+!
+redundancy
+!
+!
+ip ssh version 2
+!
+!
+!
+!
+!
+crypto isakmp policy 1
+ encr 3des
+ hash md5
+ authentication pre-share
+ group 5
+!
+crypto isakmp policy 2
+ encr 3des
+ hash md5
+ authentication pre-share
+ group 5
+crypto isakmp key MMB address 200.200.200.1
+crypto isakmp key MMB address 200.200.200.21
+!
+!
+crypto ipsec transform-set rm-rl esp-3des esp-md5-hmac
+ mode tunnel
+crypto ipsec transform-set rm-rp esp-3des esp-md5-hmac
+ mode tunnel
+!
+!
+!
+crypto map IPMAP 10 ipsec-isakmp
+ description ### Tunnel vers Lyon ###
+ set peer 200.200.200.1
+ set transform-set rm-rl
+ match address VPN
+crypto map IPMAP 20 ipsec-isakmp
+ description ### Tunnel vers Paris ###
+ set peer 200.200.200.21
+ set transform-set rm-rp
+ match address VPN_2
+!
+!
+!
+!
+!
+interface Ethernet0/0
+ no shutdown
+ no ip address
+!
+interface Ethernet0/1
+ no shutdown
+ no ip address
+ shutdown
+!
+interface Ethernet0/2
+ no shutdown
+ no ip address
+!
+interface Ethernet0/2.1
+ no shutdown
+ encapsulation dot1Q 10
+ ip address 192.168.1.106 255.255.255.240
+!
+interface Ethernet0/2.2
+ no shutdown
+ encapsulation dot1Q 20
+ ip address 192.168.1.118 255.255.255.248
+!
+interface Ethernet0/2.3
+ no shutdown
+ encapsulation dot1Q 30
+ ip address 192.168.1.126 255.255.255.248
+!
+interface Ethernet0/2.4
+ no shutdown
+ encapsulation dot1Q 99
+ ip address 192.168.3.11 255.255.255.248
+!
+interface Ethernet0/3
+ no shutdown
+ no ip address
+ shutdown
+!
+interface Ethernet1/0
+ no shutdown
+ no ip address
+ shutdown
+!
+interface Ethernet1/1
+ no shutdown
+ no ip address
+ shutdown
+!
+interface Ethernet1/2
+ no shutdown
+ no ip address
+ shutdown
+!
+interface Ethernet1/3
+ no shutdown
+ no ip address
+ shutdown
+!
+interface Ethernet2/0
+ no shutdown
+ no ip address
+ shutdown
+!
+interface Ethernet2/1
+ no shutdown
+ no ip address
+ shutdown
+!
+interface Ethernet2/2
+ no shutdown
+ no ip address
+ shutdown
+!
+interface Ethernet2/3
+ no shutdown
+ no ip address
+ shutdown
+!
+interface Ethernet3/0
+ no shutdown
+ no ip address
+ shutdown
+!
+interface Ethernet3/1
+ no shutdown
+ no ip address
+ shutdown
+!
+interface Ethernet3/2
+ no shutdown
+ no ip address
+ shutdown
+!
+interface Ethernet3/3
+ no shutdown
+ no ip address
+ shutdown
+!
+interface Ethernet4/0
+ no shutdown
+ no ip address
+ shutdown
+!
+interface Ethernet4/1
+ no shutdown
+ no ip address
+ shutdown
+!
+interface Ethernet4/2
+ no shutdown
+ no ip address
+ shutdown
+!
+interface Ethernet4/3
+ no shutdown
+ no ip address
+ shutdown
+!
+interface Serial5/0
+ no shutdown
+ ip address 200.200.200.17 255.255.255.252
+ serial restart-delay 0
+ crypto map IPMAP
+!
+interface Serial5/1
+ no shutdown
+ no ip address
+ serial restart-delay 0
+!
+interface Serial5/2
+ no shutdown
+ no ip address
+ serial restart-delay 0
+!
+interface Serial5/3
+ no shutdown
+ no ip address
+ shutdown
+ serial restart-delay 0
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+ip route 0.0.0.0 0.0.0.0 200.200.200.18
+!
+ip access-list extended VPN
+ permit ip 192.168.1.96 0.0.0.31 192.168.1.64 0.0.0.63
+ip access-list extended VPN_2
+ permit ip 192.168.1.96 0.0.0.31 192.168.1.0 0.0.0.63
+!
+!
+!
+!
+control-plane
+!
+!
+!
+!
+!
+!
+!
+!
+line con 0
+ logging synchronous
+line aux 0
+line vty 0 4
+ login local
+ transport input ssh
+ transport output none
+!
+!
+end

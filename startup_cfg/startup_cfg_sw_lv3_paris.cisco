@@ -1,0 +1,311 @@
+
+!
+! Last configuration change at 22:59:09 EET Sun Jul 21 2019
+!
+version 15.1
+service timestamps debug datetime msec
+service timestamps log datetime msec
+service password-encryption
+service compress-config
+!
+hostname SW_LV3_Distrib_Paris
+!
+boot-start-marker
+boot-end-marker
+!
+!
+enable secret 4 tnhtc92DXBhelxjYk8LWJrPV36S2i4ntXrpb4RFmfqY
+!
+username mmb password 7 070C285F4D06
+no aaa new-model
+clock timezone EET 2 0
+vtp domain infra-mmb.fr
+vtp mode transparent
+!
+ip cef
+ip dhcp excluded-address 192.168.1.97
+!
+ip dhcp pool Commerce
+ network 192.168.1.0 255.255.255.248
+ default-router 192.168.1.5
+!
+ip dhcp pool Comptabilite
+ network 192.168.1.8 255.255.255.248
+ default-router 192.168.1.13
+!
+ip dhcp pool DEV_Web_App
+ network 192.168.1.16 255.255.255.248
+ default-router 192.168.1.21
+!
+ip dhcp pool Direction_Generale
+ network 192.168.1.24 255.255.255.248
+ default-router 192.168.1.29
+!
+ip dhcp pool Juridique
+ network 192.168.1.32 255.255.255.248
+ default-router 192.168.1.37
+!
+ip dhcp pool Marketing
+ network 192.168.1.40 255.255.255.248
+ default-router 192.168.1.45
+!
+ip dhcp pool RH
+ network 192.168.1.48 255.255.255.248
+ default-router 192.168.1.53
+!
+ip dhcp pool Support
+ network 192.168.1.56 255.255.255.248
+ default-router 192.168.1.61
+!
+!
+ip domain-name infra-mmb.fr
+ip name-server 172.16.1.254
+ip name-server 8.8.8.8
+no ipv6 cef
+ipv6 multicast rpf use-bgp
+!
+!
+!
+!
+!
+!
+!
+spanning-tree mode pvst
+spanning-tree extend system-id
+!
+!
+!
+!
+vlan internal allocation policy ascending
+!
+vlan 10
+ name Commerce
+!
+vlan 20
+ name Comptabilite
+!
+vlan 30
+ name DEV_Web_App
+!
+vlan 40
+ name Direction_Generale
+!
+vlan 50
+ name Juridique
+!
+vlan 60
+ name Marketing
+!
+vlan 70
+ name RH
+!
+vlan 80
+ name Support
+!
+vlan 99
+ name management
+!
+vlan 900
+!
+ip ssh version 2
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Ethernet0/0
+ no shutdown
+ switchport trunk encapsulation dot1q
+ switchport trunk allowed vlan 1,10,20,30,40,50,60,70,80,99
+ switchport mode trunk
+ duplex auto
+!
+interface Ethernet0/1
+ no shutdown
+ switchport trunk encapsulation dot1q
+ switchport trunk allowed vlan 1,10,20,30,40,50,60,70,80,99
+ switchport mode trunk
+ duplex auto
+!
+interface Ethernet0/2
+ no shutdown
+ switchport trunk encapsulation dot1q
+ switchport trunk allowed vlan 1,10,20,30,40,50,60,70,80,99
+ switchport mode trunk
+ duplex auto
+!
+interface Ethernet0/3
+ no shutdown
+ duplex auto
+!
+interface Ethernet1/0
+ no shutdown
+ duplex auto
+!
+interface Ethernet1/1
+ no shutdown
+ duplex auto
+!
+interface Ethernet1/2
+ no shutdown
+ switchport trunk encapsulation dot1q
+ switchport trunk allowed vlan 1,10,20,30,40,50,60,70,80,99
+ switchport mode trunk
+ duplex auto
+!
+interface Ethernet1/3
+ no shutdown
+ duplex auto
+!
+interface Ethernet2/0
+ no shutdown
+ duplex auto
+!
+interface Ethernet2/1
+ no shutdown
+ duplex auto
+!
+interface Ethernet2/2
+ no shutdown
+ duplex auto
+!
+interface Ethernet2/3
+ no shutdown
+ duplex auto
+!
+interface Serial3/0
+ no shutdown
+ no ip address
+ shutdown
+ no fair-queue
+ serial restart-delay 0
+!
+interface Serial3/1
+ no shutdown
+ no ip address
+ shutdown
+ serial restart-delay 0
+!
+interface Serial3/2
+ no shutdown
+ no ip address
+ shutdown
+ serial restart-delay 0
+!
+interface Serial3/3
+ no shutdown
+ no ip address
+ shutdown
+ serial restart-delay 0
+!
+interface Serial4/0
+ no shutdown
+ no ip address
+ shutdown
+ serial restart-delay 0
+!
+interface Serial4/1
+ no shutdown
+ no ip address
+ shutdown
+ serial restart-delay 0
+!
+interface Serial4/2
+ no shutdown
+ no ip address
+ shutdown
+ serial restart-delay 0
+!
+interface Serial4/3
+ no shutdown
+ no ip address
+ shutdown
+ serial restart-delay 0
+!
+interface Serial5/0
+ no shutdown
+ no ip address
+ shutdown
+ serial restart-delay 0
+!
+interface Serial5/1
+ no shutdown
+ no ip address
+ shutdown
+ serial restart-delay 0
+!
+interface Serial5/2
+ no shutdown
+ no ip address
+ shutdown
+ serial restart-delay 0
+!
+interface Serial5/3
+ no shutdown
+ no ip address
+ shutdown
+ serial restart-delay 0
+!
+interface Vlan1
+ no shutdown
+ no ip address
+!
+interface Vlan10
+ no shutdown
+ ip address 192.168.1.4 255.255.255.248
+!
+interface Vlan20
+ no shutdown
+ ip address 192.168.1.12 255.255.255.248
+!
+interface Vlan30
+ no shutdown
+ ip address 192.168.1.20 255.255.255.248
+!
+interface Vlan40
+ no shutdown
+ ip address 192.168.1.28 255.255.255.248
+!
+interface Vlan50
+ no shutdown
+ ip address 192.168.1.36 255.255.255.248
+!
+interface Vlan60
+ no shutdown
+ ip address 192.168.1.44 255.255.255.248
+!
+interface Vlan70
+ no shutdown
+ ip address 192.168.1.52 255.255.255.248
+!
+interface Vlan80
+ no shutdown
+ ip address 192.168.1.60 255.255.255.248
+!
+interface Vlan99
+ no shutdown
+ ip address 192.168.3.18 255.255.255.248
+!
+!
+no ip http server
+!
+ip route 0.0.0.0 0.0.0.0 192.168.3.19
+!
+!
+!
+!
+control-plane
+!
+!
+line con 0
+ logging synchronous
+line aux 0
+line vty 0 4
+ login local
+ transport input ssh
+!
+end

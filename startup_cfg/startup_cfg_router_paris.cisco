@@ -1,0 +1,462 @@
+
+!
+! Last configuration change at 22:51:55 EET Sun Jul 21 2019
+!
+version 15.5
+service timestamps debug datetime msec
+service timestamps log datetime msec
+service password-encryption
+!
+hostname router_paris
+!
+boot-start-marker
+boot-end-marker
+!
+!
+enable secret 5 $1$SzL7$b9UaKR1I1QCLANFkUKCth.
+!
+no aaa new-model
+!
+!
+!
+bsd-client server url https://cloudsso.cisco.com/as/token.oauth2
+clock timezone EET 2 0
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+
+
+!
+!
+!
+!
+ip domain name infra-mmb.fr
+ip name-server 172.16.1.254
+ip name-server 8.8.8.8
+ip cef
+no ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+!
+!
+cts logging verbose
+!
+!
+username mmb password 7 104D000A0618
+!
+redundancy
+!
+!
+ip ssh version 2
+!
+!
+!
+!
+!
+crypto isakmp policy 1
+ encr 3des
+ hash md5
+ authentication pre-share
+ group 5
+!
+crypto isakmp policy 2
+ encr 3des
+ hash md5
+ authentication pre-share
+ group 5
+!
+crypto isakmp policy 3
+ encr 3des
+ hash md5
+ authentication pre-share
+ group 5
+crypto isakmp key MMB address 200.200.200.17
+crypto isakmp key MMB address 200.200.200.1
+!
+!
+crypto ipsec transform-set rp-rm esp-3des esp-md5-hmac
+ mode tunnel
+crypto ipsec transform-set rp-rl esp-3des esp-md5-hmac
+ mode tunnel
+!
+!
+!
+crypto map IPMAP 10 ipsec-isakmp
+ description ### Tunnel vers Marseille ###
+ set peer 200.200.200.17
+ set transform-set rp-rm
+ match address VPN
+crypto map IPMAP 20 ipsec-isakmp
+ description ### Tunnel vers Lyon ###
+ set peer 200.200.200.1
+ set transform-set rp-rl
+ match address VPN_2
+!
+!
+!
+!
+!
+interface Ethernet0/0
+ no shutdown
+ no ip address
+!
+interface Ethernet0/1
+ no shutdown
+ no ip address
+ shutdown
+!
+interface Ethernet0/2
+ no shutdown
+ no ip address
+ shutdown
+!
+interface Ethernet0/3
+ no shutdown
+ no ip address
+ shutdown
+!
+interface Ethernet1/0
+ no shutdown
+ no ip address
+ shutdown
+!
+interface Ethernet1/1
+ no shutdown
+ no ip address
+ shutdown
+!
+interface Ethernet1/2
+ no shutdown
+ no ip address
+ ip nat inside
+ ip virtual-reassembly in
+!
+interface Ethernet1/2.1
+ no shutdown
+ encapsulation dot1Q 10
+ ip address 192.168.1.2 255.255.255.248
+ ip nat inside
+ ip virtual-reassembly in
+!
+interface Ethernet1/2.2
+ no shutdown
+ encapsulation dot1Q 20
+ ip address 192.168.1.13 255.255.255.248
+ ip nat inside
+ ip virtual-reassembly in
+!
+interface Ethernet1/2.3
+ no shutdown
+ encapsulation dot1Q 30
+ ip address 192.168.1.21 255.255.255.248
+ ip nat inside
+ ip virtual-reassembly in
+!
+interface Ethernet1/2.4
+ no shutdown
+ encapsulation dot1Q 40
+ ip address 192.168.1.29 255.255.255.248
+ ip nat inside
+ ip virtual-reassembly in
+!
+interface Ethernet1/2.5
+ no shutdown
+ encapsulation dot1Q 50
+ ip address 192.168.1.37 255.255.255.248
+ ip nat inside
+ ip virtual-reassembly in
+!
+interface Ethernet1/2.6
+ no shutdown
+ encapsulation dot1Q 60
+ ip address 192.168.1.45 255.255.255.248
+ ip nat inside
+ ip virtual-reassembly in
+!
+interface Ethernet1/2.7
+ no shutdown
+ encapsulation dot1Q 70
+ ip address 192.168.1.53 255.255.255.248
+ ip nat inside
+ ip virtual-reassembly in
+!
+interface Ethernet1/2.8
+ no shutdown
+ encapsulation dot1Q 80
+ ip address 192.168.1.61 255.255.255.248
+ ip nat inside
+ ip virtual-reassembly in
+!
+interface Ethernet1/2.9
+ no shutdown
+ encapsulation dot1Q 99
+ ip address 192.168.3.19 255.255.255.248
+ ip nat inside
+ ip virtual-reassembly in
+!
+interface Ethernet1/3
+ no shutdown
+ no ip address
+ shutdown
+!
+interface Ethernet2/0
+ no shutdown
+ no ip address
+ shutdown
+!
+interface Ethernet2/1
+ no shutdown
+ no ip address
+ shutdown
+!
+interface Ethernet2/2
+ no shutdown
+ no ip address
+ shutdown
+!
+interface Ethernet2/3
+ no shutdown
+ no ip address
+ shutdown
+!
+interface Ethernet3/0
+ no shutdown
+ no ip address
+ shutdown
+!
+interface Ethernet3/1
+ no shutdown
+ no ip address
+ shutdown
+!
+interface Ethernet3/2
+ no shutdown
+ no ip address
+ shutdown
+!
+interface Ethernet3/3
+ no shutdown
+ no ip address
+ shutdown
+!
+interface Ethernet4/0
+ no shutdown
+ no ip address
+ shutdown
+!
+interface Ethernet4/1
+ no shutdown
+ no ip address
+ shutdown
+!
+interface Ethernet4/2
+ no shutdown
+ no ip address
+ shutdown
+!
+interface Ethernet4/3
+ no shutdown
+ no ip address
+ shutdown
+!
+interface Serial5/0
+ no shutdown
+ ip address 200.200.200.21 255.255.255.252
+ ip nat outside
+ ip virtual-reassembly in
+ serial restart-delay 0
+ crypto map IPMAP
+!
+interface Serial5/1
+ no shutdown
+ no ip address
+ ip nat inside
+ ip virtual-reassembly in
+ serial restart-delay 0
+!
+interface Serial5/2
+ no shutdown
+ no ip address
+ ip nat inside
+ ip virtual-reassembly in
+ serial restart-delay 0
+!
+interface Serial5/3
+ no shutdown
+ no ip address
+ shutdown
+ serial restart-delay 0
+!
+interface Serial6/0
+ no shutdown
+ no ip address
+ ip virtual-reassembly in
+ shutdown
+ serial restart-delay 0
+!
+interface Serial6/1
+ no shutdown
+ no ip address
+ ip virtual-reassembly in
+ shutdown
+ serial restart-delay 0
+!
+interface Serial6/2
+ no shutdown
+ no ip address
+ shutdown
+ serial restart-delay 0
+!
+interface Serial6/3
+ no shutdown
+ no ip address
+ shutdown
+ serial restart-delay 0
+!
+interface Serial7/0
+ no shutdown
+ no ip address
+ shutdown
+ serial restart-delay 0
+!
+interface Serial7/1
+ no shutdown
+ no ip address
+ shutdown
+ serial restart-delay 0
+!
+interface Serial7/2
+ no shutdown
+ no ip address
+ shutdown
+ serial restart-delay 0
+!
+interface Serial7/3
+ no shutdown
+ no ip address
+ shutdown
+ serial restart-delay 0
+!
+interface Serial8/0
+ no shutdown
+ no ip address
+ shutdown
+ serial restart-delay 0
+!
+interface Serial8/1
+ no shutdown
+ no ip address
+ shutdown
+ serial restart-delay 0
+!
+interface Serial8/2
+ no shutdown
+ no ip address
+ shutdown
+ serial restart-delay 0
+!
+interface Serial8/3
+ no shutdown
+ no ip address
+ shutdown
+ serial restart-delay 0
+!
+interface Serial9/0
+ no shutdown
+ no ip address
+ shutdown
+ serial restart-delay 0
+!
+interface Serial9/1
+ no shutdown
+ no ip address
+ shutdown
+ serial restart-delay 0
+!
+interface Serial9/2
+ no shutdown
+ no ip address
+ shutdown
+ serial restart-delay 0
+!
+interface Serial9/3
+ no shutdown
+ no ip address
+ shutdown
+ serial restart-delay 0
+!
+router ospf 1
+ network 192.168.1.0 0.0.0.7 area 10
+ network 192.168.1.8 0.0.0.7 area 10
+ network 192.168.1.16 0.0.0.7 area 10
+ network 192.168.1.24 0.0.0.7 area 10
+ network 192.168.1.32 0.0.0.7 area 10
+ network 192.168.1.40 0.0.0.7 area 10
+ network 192.168.1.48 0.0.0.7 area 10
+ network 192.168.1.56 0.0.0.7 area 10
+ network 192.168.1.0 0.0.0.63 area 0
+ network 192.168.2.0 0.0.0.3 area 10
+ network 192.168.3.16 0.0.0.7 area 10
+ network 200.200.200.4 0.0.0.3 area 10
+ network 200.200.200.12 0.0.0.3 area 10
+ network 200.200.200.16 0.0.0.3 area 10
+ network 200.200.200.20 0.0.0.3 area 0
+ network 200.200.200.24 0.0.0.3 area 10
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+ip nat inside source list NO-NAT interface Serial5/0 overload
+ip route 0.0.0.0 0.0.0.0 200.200.200.22
+!
+ip access-list extended NO-NAT
+ deny   ip 192.168.1.0 0.0.0.63 192.168.1.96 0.0.0.31
+ permit ip any any
+ip access-list extended VPN
+ permit ip 192.168.1.0 0.0.0.63 192.168.1.96 0.0.0.31
+ip access-list extended VPN_2
+ permit ip 192.168.1.0 0.0.0.63 192.168.1.64 0.0.0.63
+!
+!
+!
+!
+control-plane
+!
+!
+!
+!
+!
+!
+!
+!
+line con 0
+ logging synchronous
+line aux 0
+line vty 0 4
+ login local
+ transport input ssh
+ transport output ssh
+!
+!
+end
