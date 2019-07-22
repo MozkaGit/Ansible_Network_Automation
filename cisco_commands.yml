@@ -1,0 +1,15 @@
+---
+- name: Network Deployment
+  connection: local
+  gather_facts: false
+  hosts: cisco
+  tasks:
+
+    - name: Get config for IOL devices
+      ios_command:
+        commands:
+          - show version | include IOS
+          - show ip interface brief 
+      register: output
+
+    - debug: var=output.stdout_lines
